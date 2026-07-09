@@ -1,0 +1,12 @@
+node_modules/
+__pycache__/
+*.pyc
+.DS_Store
+out/
+
+# assets générés par les exemples d effets
+examples/fx-assets/
+examples/advanced-effects.pptx
+svg/
+bg/
+icons/
