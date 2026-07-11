@@ -26,6 +26,25 @@ on its own, without a presenter. Useful density is a quality; a half-empty conte
 Golden rule: **content first, style second** — no slide is built until the data has been
 extracted and the analysis laid out.
 
+## Reasoning directives (apply to everything — hardest on the slide TEXT)
+
+The text, analysis and numbers ON the slides ARE the deliverable. Most generation failures come from
+treating them lightly — surface-level phrasing, half-checked numbers, sketched analysis. Therefore:
+
+- **Treat every task as complex, even if it appears simple.** Never write slide text from surface
+  pattern-matching. Before writing a slide: restate what this slide must PROVE, plan its argument,
+  consider what a skeptical reader would object, then write the final text.
+- **Never limit effort** to save time or tokens: do not minimize steps, file reads, or checks.
+  Read ALL relevant sources (`sources/*.md`, in full) before writing content; verify every number,
+  claim, and quote against the actual sources — never from memory. If unsure whether deep reasoning
+  is needed, the answer is YES.
+- **Verify before declaring done.** After the build: re-read every visible string on the rendered
+  slides, re-check every number against `sources/*.md`, run the full QA loop. A deck is "done" when
+  it has been verified, not when it has been generated.
+- **Correctness over speed, in all cases.** These directives apply DOUBLY at step 2 (Content &
+  wording) and step C (MBB craft): the slide text is written once, deeply, against sources — not
+  sketched and patched later.
+
 ## Output language (ALWAYS detect first)
 
 The DECK is written in the language of the user's request: French request → French deck; English

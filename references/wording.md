@@ -2,6 +2,12 @@
 
 Content must be **dense like a McKinsey deck** AND **self-contained**: every slide must be understandable on its own, without the presenter.
 
+> **Reasoning directives apply here at MAXIMUM strength** (see SKILL.md): this step produces the
+> deliverable itself — the text the reader will see. Do not write from pattern-matching: for each
+> slide, re-read the relevant `sources/*.md` in full, restate what the slide must prove, then write
+> the final text against the sources. Every number is re-checked at the moment it is written.
+> Correctness over speed; no step or check skipped to save tokens.
+
 > **Deck language.** The deck is generated in French OR in English, following the user's request (see the "Output language" section of SKILL.md). Every rule below applies in BOTH languages unless explicitly scoped "When the deck is in FRENCH:" or "When the deck is in ENGLISH:". French ❌/✅ pairs are kept verbatim as French-deck illustrations.
 
 ## ⚠️ Content IS the deliverable of this step (cause #1 of empty slides)
