@@ -1,7 +1,7 @@
 ---
-name: sprintospptx-v3
+name: sprintospptx
 description: >
-  SprintOS PPTX V3 — THE reference PowerPoint skill of Sprint OS (replaces sprintospptx and any other pptx skill).
+  SprintOS PPTX — THE reference PowerPoint skill of Sprint OS (replaces any other pptx skill).
   Use whenever a .pptx file is involved, as input or output: create a deck / presentation / slides / workshop /
   training / pitch; read, parse, or extract content from a .pptx; edit, extend, or merge an existing
   presentation; work from a template. Generates native editable decks with DENSE consulting-grade content
@@ -14,9 +14,9 @@ license: >
   Open source (MIT). Made by Sprint OS — see LICENSE.
 ---
 
-# SprintOS PPTX V3 — Deck Builder
+# SprintOS PPTX — Deck Builder
 
-> V3 = a **battle-tested technical mechanism** (editing existing .pptx files, OOXML scripts, QA-safe
+> This skill = a **battle-tested technical mechanism** (editing existing .pptx files, OOXML scripts, QA-safe
 > fonts, pptxgenjs pitfalls, visual QA by an independent reviewer) **+ the Sprint OS doctrine** (dense
 > consulting-grade content, sourced data, self-contained wording, subject brand identity).
 > The deliverable is always a **native editable .pptx** (real text, tables, charts — never images of text).
@@ -153,7 +153,7 @@ the intent; in case of genuine ambiguity, ask ONE question, not a questionnaire.
 > The **clear keynote** register is the historical style of the builder's V1, kept as an option
 > (`references/keynote-style.md`): bold subject-linked palettes, visual layouts, big numbers,
 > airy. Choose it for keynotes, launches, and general-public communications; in that case its rules
-> take precedence over the density floors, but the V3 invariants remain (no em dash, sourced
+> take precedence over the density floors, but the skill invariants remain (no em dash, sourced
 > numbers, one accent, QA).
 
 ### 1. Data anchoring (NON-negotiable)

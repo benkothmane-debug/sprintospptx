@@ -1,4 +1,4 @@
-# SprintOS PPTX V3 — Deck Builder
+# SprintOS PPTX — Deck Builder
 
 **Made by Sprint OS · Open source (MIT)**
 

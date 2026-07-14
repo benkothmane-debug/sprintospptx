@@ -1,6 +1,6 @@
 {
-  "name": "sprintospptx-v3",
-  "version": "3.0.0",
+  "name": "sprintospptx",
+  "version": "1.2.0",
   "description": "Sprint OS Deck Builder \u2014 a reusable skill that turns source material into dense, consulting-grade, brand-aware .pptx decks (native/editable).",
   "author": "Sprint OS",
   "license": "MIT",
