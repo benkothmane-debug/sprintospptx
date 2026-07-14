@@ -25,8 +25,8 @@ are used when available, with documented fallbacks otherwise.
 
 ## Entry point
 Read [`SKILL.md`](SKILL.md) — it routes to `references/` (doctrine), `assets/` (build kit),
-`scripts/` (tooling) and `examples/` (golden deck: one slide per template, reference renders in
-`examples/render/`).
+`scripts/` (tooling) and `examples/` (golden deck: one slide per template; visual overview in
+`examples/render/contact-sheet.jpg`).
 
 ## License
 MIT — see [LICENSE](LICENSE). © Sprint OS.
