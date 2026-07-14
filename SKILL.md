@@ -515,9 +515,13 @@ directory to the PATH first (macOS: `export PATH="/Applications/LibreOffice.app/
 
 The skill is **model- and agent-agnostic**: everything goes through Node, Python 3, and LibreOffice.
 Verify/install on first use:
-- **Node ≥ 18 + pptxgenjs / sharp / react-icons / react-dom**: included in the skill's `node_modules/`
-  (`require` from the skill directory, or `npm i` in the deck's project). If `node` is not on the
-  PATH, look for an nvm install (`ls ~/.nvm/versions/node/*/bin` — on this machine: v22.23.1).
+- **Node ≥ 18 + pptxgenjs / sharp** (core, ~24 MB installed): `npm i` in the skill directory, then
+  `require` from it. If `node` is not on the PATH, look for an nvm install
+  (`ls ~/.nvm/versions/node/*/bin` — on this machine: v22.23.1).
+- **Icons**: a **bundled set of ~137 curated icons** ships with the skill (`assets/icon-svgs.json`,
+  zero extra dependency — list them with `require('./assets/icon.cjs').list()`). Prefer bundled
+  names. For an icon outside the bundle, install the optional full catalog first:
+  `npm i react react-dom react-icons` (~90 MB) — `icon.cjs` falls back to it automatically.
 - **python-pptx**: `python3 -c "import pptx"` — used by `scripts/extract_text.py` and `scripts/effects.py`
   (`pip install python-pptx` if missing).
 - **LibreOffice (soffice)**: PDF rendering for QA. macOS: `/Applications/LibreOffice.app/Contents/MacOS/soffice`;

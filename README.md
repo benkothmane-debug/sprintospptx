@@ -19,9 +19,11 @@ An agent skill that turns source material into dense, consulting-grade (McKinsey
   deck, English → English).
 
 ## Requirements
-Node ≥ 18, Python 3 (`python-pptx`, `PyMuPDF`, `Pillow`), LibreOffice (`soffice`) for QA rendering.
-Model/agent agnostic: works with any LLM agent able to run shell commands; subagents and task tools
-are used when available, with documented fallbacks otherwise.
+Node ≥ 18 (`npm install` in the skill folder: pptxgenjs + sharp, **~24 MB**), Python 3 (`python-pptx`,
+`PyMuPDF`, `Pillow`), LibreOffice (`soffice`) for QA rendering. A curated set of **137 icons is
+bundled** (no extra dependency); installing `react react-dom react-icons` (optional, ~90 MB) unlocks
+the full 30k-icon catalog. Model/agent agnostic: works with any LLM agent able to run shell commands;
+subagents and task tools are used when available, with documented fallbacks otherwise.
 
 ## Entry point
 Read [`SKILL.md`](SKILL.md) — it routes to `references/` (doctrine), `assets/` (build kit),
