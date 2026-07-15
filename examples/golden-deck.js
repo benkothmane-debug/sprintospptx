@@ -27,6 +27,11 @@ const svgMekko = await svgKit.render(svgKit.mekko({ cols: [
   { label: "Services (35%)", weight: 35, segs: [ { value: 45, color: ACC }, { value: 35, color: "5AA0FF" }, { value: 20, color: "AFC9F0" } ] } ] }), FX, "mekko");
 const svgWaffle = await svgKit.render(svgKit.waffle({ value: 31, color: ACC, label: "31%", sub: "parts spend captured" }), FX, "waffle");
 const svgVenn = await svgKit.render(svgKit.venn({ center: "Premium", sets: [ { label: "Uptime need" }, { label: "Field coverage" }, { label: "Usage data" } ] }), FX, "venn");
+// bundled icons (no react-icons needed) for the icon-columns slide
+const makeIcon = require(path.join(ROOT, "assets/icon.cjs"));
+const ICONS = {};
+for (const [k, n] of [["contract","FaClipboardCheck"],["data","FaDatabase"],["people","FaUsers"],["parts","FaTruck"]])
+  ICONS[k] = await makeIcon(n, "1D5FCC", FX);
 
 const pres = new pptxgen(); pres.layout = "LAYOUT_WIDE";
 const kit = require(path.join(ROOT, "assets/deck_helpers.js"))(pres); // neutral default accent
@@ -413,6 +418,73 @@ kit.dividerDark(pres.addSlide(), { part: "Appendix", title: "Exhibit gallery",
   s.addText("Dark KPI strip: native gradient tiles (effects.py) + subtle glow on the figures — reserved for the numbers that carry the story.", {
     x: 0.55, y: 5.1, w: 12.2, h: 0.5, fontFace: kit.THEME.fBody, fontSize: 12.5, italic: true, color: kit.THEME.dmute, margin: 0 });
   kit.source(s, SRC, P());
+}
+
+// G7. Icon columns — the bundled icon set (137 icons, no extra dependency)
+{
+  const s = pres.addSlide();
+  kit.frameLight(s, "EXHIBITS — ICON COLUMNS",
+    "Four levers carry the program, each with one owner and one number to watch",
+    "Icon columns with the BUNDLED icon set (137 icons, tinted to the brand accent, zero extra dependency).");
+  const z = kit.zone({ top: 2.3, noKicker: false });
+  kit.iconColumns(s, [
+    { title: "Contract attach", text: "Every equipment sale carries a 5-year service contract offer. The pilot converts 26% of the installed base approached, against a 14% break-even.", icon: ICONS.contract },
+    { title: "Usage data", text: "6,800 connected sites feed the predictive models: 38% of failures are flagged 90 days ahead, cutting intervention costs by 22%.", icon: ICONS.data },
+    { title: "People", text: "300 technicians move to predictive maintenance by 2028, with an expert track and a certification bonus to hold attrition under 6%.", icon: ICONS.people },
+    { title: "Parts logistics", text: "Forward stock in 12 regional hubs brings next-day delivery to 94% of the base, the argument that beats independent maintainers.", icon: ICONS.parts }],
+    z.x, z.y + 0.1, z.w);
+  kit.band(s, "Key takeaway", "One owner per lever, one metric per owner: the program reviews four numbers, not forty.");
+  kit.source(s, SRC, P());
+}
+
+// G8. Delivery cockpit — gantt + harvey balls + progress bars + RAG dots
+{
+  const s = pres.addSlide();
+  kit.frameLight(s, "EXHIBITS — DELIVERY PRIMITIVES",
+    "The integrated plan holds on wave 1; training is the only workstream behind the curve",
+    "Gantt (integrated plan), harvey balls (delivery confidence), progress bars and RAG dots.");
+  const [L, R2] = kit.cols([1.5, 1], { top: 2.25 });
+  kit.exhibitHeader(s, "Integrated plan 2027, by workstream", L.x, L.y - 0.02, L.w);
+  kit.gantt(s, [
+    { label: "M&A & integration", start: 0, span: 2 },
+    { label: "North pilot", start: 0.5, span: 1.5 },
+    { label: "Platform migration", start: 1, span: 2.5 },
+    { label: "Training waves", start: 1.5, span: 2.5 },
+    { label: "Regional roll-out", start: 2.5, span: 1.5 }],
+    L.x, L.y + 0.65, L.w - 0.3, L.h - 1.5,
+    { periods: ["Q1 2027", "Q2 2027", "Q3 2027", "Q4 2027"], milestones: [ { at: 2, label: "Go/no-go" }, { at: 3.4, label: "Wave 2" }] });
+  kit.exhibitHeader(s, "Workstream health, W28", R2.x, R2.y - 0.02, R2.w);
+  [["M&A & integration", 3, 72, "green"], ["North pilot", 4, 88, "green"], ["Platform migration", 3, 55, "green"],
+   ["Training waves", 2, 38, "amber"], ["Regional roll-out", 1, 10, "green"]].forEach((r, i) => {
+    const ry = R2.y + 0.5 + i * 0.78;
+    kit.rag(s, R2.x, ry + 0.03, r[3], null);
+    s.addText(r[0], { x: R2.x + 0.3, y: ry - 0.04, w: R2.w - 1.1, h: 0.3, fontFace: kit.THEME.fBody, fontSize: 11.5, bold: true, color: kit.THEME.ink, margin: 0 });
+    kit.harvey(s, R2.x + R2.w - 0.32, ry, r[1]);
+    kit.progressBar(s, R2.x + 0.3, ry + 0.32, R2.w - 1.45, r[2], { h: 0.14, size: 9 });
+  });
+  kit.source(s, "Source: program reporting W28; Meridio PMO", P());
+}
+
+// G9. Voice of the customer — pull quote + conversion funnel
+{
+  const s = pres.addSlide();
+  kit.frameLight(s, "EXHIBITS — QUOTE & FUNNEL",
+    "Customers say it themselves: uptime sells the contract, and the funnel proves they sign",
+    "Pull quote (verbatim evidence) and conversion funnel (stage-by-stage narrowing).");
+  const [L, R2] = kit.cols([1.25, 1], { top: 2.25 });
+  kit.pullQuote(s, L.x, L.y + 0.15, L.w - 0.3, 2.2,
+    "“An hour of unplanned downtime costs me more than a year of your contract. If your sensors see the failure coming, I am not negotiating the price.”", { size: 17 });
+  s.addText("Operations director, agrifood plant (interview #17 of 42) - the pattern behind 81% of interviews.", {
+    x: L.x + 0.05, y: L.y + 2.5, w: L.w - 0.4, h: 0.35, fontFace: kit.THEME.fBody, fontSize: 11, italic: true, color: kit.THEME.gray, margin: 0 });
+  s.addText([{ text: "What it changes: ", options: { bold: true, color: kit.THEME.accentInk } },
+    { text: "the pitch leads with measured uptime, not with a maintenance price list; the premium tier is priced against the cost of downtime.", options: { color: kit.THEME.ink } }], {
+    x: L.x + 0.05, y: L.y + 3.1, w: L.w - 0.4, h: 0.8, fontFace: kit.THEME.fBody, fontSize: 12, margin: 0, lineSpacingMultiple: 1.2, valign: "top" });
+  kit.exhibitHeader(s, "Pilot conversion funnel, North region", R2.x, R2.y - 0.02, R2.w);
+  kit.funnel(s, [
+    { label: "Sites approached", value: 1580 }, { label: "Offers presented", value: 940 },
+    { label: "Pilots accepted", value: 412 }, { label: "Contracts signed", value: 108 }],
+    R2.x + 0.2, R2.y + 0.5, R2.w - 0.6, R2.h - 1.1);
+  kit.source(s, "Source: 42 customer interviews; pilot CRM extract, W28", P());
 }
 
 // Closing
