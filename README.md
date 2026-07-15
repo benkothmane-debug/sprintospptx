@@ -27,7 +27,7 @@ subagents and task tools are used when available, with documented fallbacks othe
 
 ## Entry point
 Read [`SKILL.md`](SKILL.md) — it routes to `references/` (doctrine), `assets/` (build kit),
-`scripts/` (tooling) and `examples/` (golden deck: one slide per template; visual overview in
+`scripts/` (tooling) and `examples/` (golden deck: every template, structure pages and an exhibit gallery; overview in
 `examples/render/contact-sheet.jpg`).
 
 ## License

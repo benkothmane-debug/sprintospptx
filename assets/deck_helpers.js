@@ -317,7 +317,10 @@ module.exports = function kit(pres, overrides = {}) {
         align:qs[i][2],fontFace:T.fMono,fontSize:9,bold:true,color:T.gray2,margin:0}); }); }
     // axis labels
     if(o.xLabel) s.addText(o.xLabel,{x:px,y:py+ph+0.06,w:pw,h:0.3,align:"center",fontFace:T.fBody,fontSize:10,italic:true,color:T.gray,margin:0});
-    if(o.yLabel) s.addText(o.yLabel,{x:z.x-0.15,y:py,w:ph,h:0.3,align:"center",fontFace:T.fBody,fontSize:10,italic:true,color:T.gray,margin:0,rotate:270});
+    // rotated axis label: pptxgenjs rotates the box around ITS CENTER, and text wraps to the
+    // pre-rotation width — so use a LONG FLAT box whose center sits left of the plot's middle.
+    if(o.yLabel) s.addText(o.yLabel,{x:px-0.32-ph/2, y:py+ph/2-0.15, w:ph, h:0.3,
+      align:"center",valign:"middle",fontFace:T.fBody,fontSize:10,italic:true,color:T.gray,margin:0,rotate:270});
     // named points
     (o.points||[]).forEach(p=>{ const d=(p.size||0.2), cx=px+p.x*pw-d/2, cy=py+(1-p.y)*ph-d/2, hl=p.highlight;
       s.addShape(R.OVAL,{x:cx,y:cy,w:d,h:d,fill:{color:hl?T.accent:lighten(T.accent,0.45)},line:{color:hl?T.accentInk:T.accent,width:1}});
