@@ -118,13 +118,13 @@ value axis** (one OR the other, not both).
 **Choose the exhibit type by the nature of the message** (CODE primitives → `references/slide-layouts.md`):
 - evolution over time → columns or line; **2 magnitudes** (volume + rate) → `comboBarLine`;
 - comparison across players → sorted horizontal bars;
-- comparison of **2 periods / before-after** → `slope` (crossing ranks) or `dumbbell` (gap per row);
-- actual **vs target** → `bullet` (compact, dashboard-style);
-- decomposition / structure → stacked bars, `mekko` (Marimekko, 2 dimensions), **waterfall** (value bridges);
-- share of a whole → `doughnutChart` (ring) or `waffle` (memorable "X out of 100" proportion);
+- comparison of **2 periods / before-after** → `slopeChart` (crossing ranks) or `dumbbellChart` (gap per row);
+- actual **vs target** → `bulletChart` (compact, dashboard-style);
+- decomposition / structure → stacked bars, `mekkoChart` (Marimekko, 2 dimensions), **waterfall** (value bridges);
+- share of a whole → `doughnutChart` (ring) or `waffleChart` (memorable "X out of 100" proportion);
 - relationship between two variables / positioning → `scatterMap` (named quadrants, named points);
-- multi-criteria profile → `radarChart` (spider); intersection of 3 sets → `venn`;
-- KPI in a ring → `donutGauge` (SVG, with gradient);
+- multi-criteria profile → `radarChart` (spider); intersection of 3 sets → `vennDiagram`;
+- KPI in a ring → `donutGauge` (SVG image — decorative accent only);
 - qualitative assessment → **harvey balls** ●◐○ or dots, never an invented chart.
 
 **Tables**: numbers **right-aligned** (comparable at a glance), labels on the left, anthracite header

@@ -106,9 +106,11 @@ Helper provided: **`assets/icon.cjs`** (`makeIcon(name, colorHex, outDir)` → m
   `comboBarLine` (bars + line on a 2nd axis), `scatterMap` (2-axis positioning + named quadrants + NAMED points).
 - **`badge`** (kit): tiny status pill pinned on a card corner ("Recommended", "Pilot", "New"…) — names WHY
   an element is highlighted; semantic only (never decorative), wired as `heroTag` on `scenarioCards`.
-- **SVG→PNG exhibits** (`assets/svg.cjs`, async, pre-generate): `donutGauge`, `radialBars`, `slope` (2 periods),
-  `dumbbell` (before→after), `bullet` (actual/target/range), `waffle` (proportion on a grid of 100), `mekko`
-  (Marimekko, variable widths), `venn` (3 circles). Rendered via `svg.render(svgString, dir, name)` then `addImage`.
+- **Native data exhibits** (kit, pure shapes — fully editable): `slopeChart` (2 periods), `dumbbellChart`
+  (before→after), `bulletChart` (actual/target/range), `waffleChart` (proportion on a grid of 100),
+  `mekkoChart` (Marimekko, variable widths), `vennDiagram` (3 sets).
+- **SVG→PNG engine** (`assets/svg.cjs`, async, pre-generate): DECORATIVE visuals only (images, not
+  editable): `donutGauge`, `radialBars` (gradient rings). Never for data a client must edit.
 
 **Grid engine** (no more improvised x/y): `zone()` = usable region between the title block and the kicker;
 `cols([2,1])` = weighted columns with exact gutters; `rows(z,[1,1])` = rows (nestable);

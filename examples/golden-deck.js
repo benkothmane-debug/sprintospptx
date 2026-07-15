@@ -6,27 +6,13 @@
 const path = require("path");
 const ROOT = path.join(__dirname, "..");
 const pptxgen = require(path.join(ROOT, "node_modules/pptxgenjs"));
-const svgKit = require(path.join(ROOT, "assets/svg.cjs"));
 const outdir = process.argv[2] || __dirname;
 
 (async () => {
 
-// ---- async pre-generation (SVG exhibits) BEFORE the synchronous build --------------------
+// ---- async pre-generation BEFORE the synchronous build -----------------------------------
+// Data exhibits are NATIVE shapes (fully editable); only icons need async pre-generation here.
 const FX = path.join(__dirname, "gd-assets");
-const ACC = "2E7CF6", ACC_D = "1D5FCC";
-const svgSlope = await svgKit.render(svgKit.slope({ leftLabel: "2025", rightLabel: "2029E", color: ACC, items: [
-  { label: "Services", a: 46, b: 48 },
-  { label: "Group", a: 28, b: 34, highlight: true },
-  { label: "Equipment", a: 20, b: 19 } ] }), FX, "slope");
-const svgDumbbell = await svgKit.render(svgKit.dumbbell({ aLabel: "Today", bLabel: "2029 target", colorB: ACC, items: [
-  { label: "Parts capture %", a: 31, b: 60 },
-  { label: "Contract attach %", a: 12, b: 26 },
-  { label: "Technician utilization %", a: 61, b: 78 } ] }), FX, "dumbbell");
-const svgMekko = await svgKit.render(svgKit.mekko({ cols: [
-  { label: "Equipment (65%)", weight: 65, segs: [ { value: 60, color: ACC }, { value: 40, color: "AFC9F0" } ] },
-  { label: "Services (35%)", weight: 35, segs: [ { value: 45, color: ACC }, { value: 35, color: "5AA0FF" }, { value: 20, color: "AFC9F0" } ] } ] }), FX, "mekko");
-const svgWaffle = await svgKit.render(svgKit.waffle({ value: 31, color: ACC, label: "31%", sub: "parts spend captured" }), FX, "waffle");
-const svgVenn = await svgKit.render(svgKit.venn({ center: "Premium", sets: [ { label: "Uptime need" }, { label: "Field coverage" }, { label: "Usage data" } ] }), FX, "venn");
 // bundled icons (no react-icons needed) for the icon-columns slide
 const makeIcon = require(path.join(ROOT, "assets/icon.cjs"));
 const ICONS = {};
@@ -352,33 +338,44 @@ kit.dividerDark(pres.addSlide(), { part: "Appendix", title: "Exhibit gallery",
   kit.source(s, SRC, P());
 }
 
-// G3. SVG exhibits I — slope + dumbbell (before / after)
+// G3. Comparisons — slope + dumbbell (NATIVE shapes, fully editable)
 {
   const s = pres.addSlide();
-  kit.frameLight(s, "EXHIBITS — SVG (COMPARISONS)",
+  kit.frameLight(s, "EXHIBITS — COMPARISONS",
     "Group margin gains six points by 2029, driven by three operational shifts on the installed base",
-    "Slope chart (two periods) and dumbbell (today vs target), rendered by the SVG engine.");
+    "Slope chart (two periods) and dumbbell (today vs target) — native shapes, every dot and label stays editable.");
   const [L, R2] = kit.cols([1, 1.1], { top: 2.2 });
   kit.exhibitHeader(s, "Margin by segment, %, 2025 vs 2029E", L.x, L.y - 0.02, L.w);
-  s.addImage({ path: svgSlope, x: L.x + 0.1, y: L.y + 0.4, w: 4.9, h: 3.5 });
+  kit.slopeChart(s, { leftLabel: "2025", rightLabel: "2029E", items: [
+    { label: "Services", a: 46, b: 48 },
+    { label: "Group", a: 28, b: 34, highlight: true },
+    { label: "Equipment", a: 20, b: 19 } ] }, L.x, L.y + 0.4, L.w - 0.2, L.h - 0.7);
   kit.exhibitHeader(s, "Operational levers, today vs 2029 target", R2.x, R2.y - 0.02, R2.w);
-  s.addImage({ path: svgDumbbell, x: R2.x + 0.15, y: R2.y + 0.55, w: 5.5, h: 3.1 });
+  kit.dumbbellChart(s, { aLabel: "Today", bLabel: "2029 target", max: 90, items: [
+    { label: "Parts capture %", a: 31, b: 60 },
+    { label: "Contract attach %", a: 12, b: 26 },
+    { label: "Tech utilization %", a: 61, b: 78 } ] }, R2.x, R2.y + 0.45, R2.w - 0.1, R2.h - 1.1);
   kit.source(s, SRC, P());
 }
 
-// G4. SVG exhibits II — mekko + waffle + venn
+// G4. Structure — mekko + waffle + venn (NATIVE shapes, fully editable)
 {
   const s = pres.addSlide();
-  kit.frameLight(s, "EXHIBITS — SVG (STRUCTURE)",
+  kit.frameLight(s, "EXHIBITS — STRUCTURE",
     "Services reach 35% of a richer mix, while parts capture and the premium sweet spot remain wide open",
-    "Marimekko (two-dimensional mix), waffle (memorable proportion) and Venn (where the premium wins).");
-  const zs = kit.cols([1.15, 1.25, 1], { top: 2.2 });
+    "Marimekko (two-dimensional mix), waffle (memorable proportion) and Venn — native shapes, fully editable.");
+  const zs = kit.cols([1.1, 1.3, 1], { top: 2.2 });
   kit.exhibitHeader(s, "2029E revenue mix", zs[0].x, zs[0].y - 0.02, zs[0].w);
-  s.addImage({ path: svgMekko, x: zs[0].x, y: zs[0].y + 0.45, w: zs[0].w - 0.15, h: (zs[0].w - 0.15) * 0.714 });
+  kit.mekkoChart(s, { cols: [
+    { label: "Equipment (65%)", weight: 65, segs: [ { value: 60 }, { value: 40, color: "AFC9F0" } ] },
+    { label: "Services (35%)", weight: 35, segs: [ { value: 45 }, { value: 35, color: "5AA0FF" }, { value: 20, color: "AFC9F0" } ] } ] },
+    zs[0].x, zs[0].y + 0.45, zs[0].w - 0.25, zs[0].h - 1.0);
   kit.exhibitHeader(s, "Parts spend captured", zs[1].x, zs[1].y - 0.02, zs[1].w);
-  s.addImage({ path: svgWaffle, x: zs[1].x, y: zs[1].y + 0.75, w: zs[1].w - 0.1, h: (zs[1].w - 0.1) * 0.585 });
+  kit.waffleChart(s, { value: 31, label: "31%", sub: "of installed-base parts spend captured today" },
+    zs[1].x, zs[1].y + 0.55, zs[1].w - 0.1, zs[1].h - 1.2);
   kit.exhibitHeader(s, "Premium sweet spot", zs[2].x, zs[2].y - 0.02, zs[2].w);
-  s.addImage({ path: svgVenn, x: zs[2].x + 0.1, y: zs[2].y + 0.42, w: zs[2].w - 0.35, h: (zs[2].w - 0.35) * 0.909 });
+  kit.vennDiagram(s, { center: "Premium", sets: [ { label: "Uptime need" }, { label: "Field coverage" }, { label: "Usage data" } ] },
+    zs[2].x, zs[2].y + 0.35, zs[2].w, zs[2].h - 0.8);
   kit.source(s, SRC, P());
 }
 

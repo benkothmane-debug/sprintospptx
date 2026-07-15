@@ -328,6 +328,79 @@ module.exports = function kit(pres, overrides = {}) {
       s.addShape(R.OVAL,{x:cx,y:cy,w:d,h:d,fill:{color:hl?T.accent:lighten(T.accent,0.45)},line:{color:hl?T.accentInk:T.accent,width:1}});
       s.addText(p.label,{x:cx+d+0.04,y:cy-0.02+d/2-0.12,w:1.6,h:0.24,fontFace:T.fBody,fontSize:9.5,bold:!!hl,color:hl?T.accentInk:T.ink,margin:0,valign:"middle"}); }); }
 
+  // ---------- NATIVE data exhibits (pure pptxgenjs shapes -> fully EDITABLE in PowerPoint) ----------
+  // These replace the SVG factories for DATA exhibits: same visuals, but every bar/dot/label is a
+  // real shape the client can edit. The SVG engine stays for decorative visuals only.
+  // SLOPE chart — o:{items:[{label,a,b,highlight?}], leftLabel, rightLabel}
+  function slopeChart(s, o, x, y, w, h){
+    const items=o.items||[], xL=x+1.55, xR=x+w-1.55, yT=y+0.5, yB=y+h-0.15;
+    const vals=items.flatMap(i=>[i.a,i.b]), min=Math.min.apply(null,vals), max=Math.max.apply(null,vals);
+    const span=(max-min)||1, Y=v=>yB-(v-min)/span*(yB-yT);
+    s.addText(o.leftLabel||"Before",{x:xL-0.8,y:y,w:1.6,h:0.3,align:"center",fontFace:T.fDisp,fontSize:13,bold:true,color:T.ink,margin:0});
+    s.addText(o.rightLabel||"After",{x:xR-0.8,y:y,w:1.6,h:0.3,align:"center",fontFace:T.fDisp,fontSize:13,bold:true,color:T.ink,margin:0});
+    [xL,xR].forEach(px=> s.addShape(R.LINE,{x:px,y:yT-0.06,w:0,h:(yB-yT)+0.12,line:{color:"E4E8ED",width:1.5}}));
+    items.forEach(it=>{ const c=it.highlight?T.accent:"C2CAD3", lw=it.highlight?2.75:1.75, ya=Y(it.a), yb=Y(it.b);
+      s.addShape(R.LINE,{x:xL,y:Math.min(ya,yb),w:xR-xL,h:Math.abs(yb-ya),line:{color:c,width:lw},flipV:yb<ya});
+      [[xL,ya],[xR,yb]].forEach(p=> s.addShape(R.OVAL,{x:p[0]-0.05,y:p[1]-0.05,w:0.1,h:0.1,fill:{color:c},line:{type:"none"}}));
+      const tc=it.highlight?T.ink:T.gray, bold=!!it.highlight;
+      s.addText(it.label+"  "+it.a,{x:xL-1.62,y:ya-0.12,w:1.5,h:0.26,align:"right",fontFace:T.fBody,fontSize:10.5,bold,color:tc,margin:0,valign:"middle"});
+      s.addText(it.b+"  "+it.label,{x:xR+0.12,y:yb-0.12,w:1.5,h:0.26,align:"left",fontFace:T.fBody,fontSize:10.5,bold,color:tc,margin:0,valign:"middle"}); }); }
+  // DUMBBELL — o:{items:[{label,a,b}], aLabel,bLabel, max?}
+  function dumbbellChart(s, o, x, y, w, h){
+    const items=o.items||[], lw=1.9, xL=x+lw, xR=x+w-0.55;
+    const max=o.max||Math.max.apply(null,items.flatMap(i=>[i.a,i.b]))*1.12||1, X=v=>xL+v/max*(xR-xL);
+    s.addText([{text:"● ",options:{color:"C2CAD3"}},{text:(o.aLabel||"Before")+"    ",options:{color:T.gray,bold:true}},
+               {text:"● ",options:{color:T.accent}},{text:o.bLabel||"After",options:{color:T.accentInk,bold:true}}],
+      {x:xL,y:y,w:w-lw,h:0.28,fontFace:T.fBody,fontSize:10.5,margin:0});
+    const rh=(h-0.45)/items.length;
+    items.forEach((it,i)=>{ const cy=y+0.55+i*rh+rh/2-0.05, xa=X(it.a), xb=X(it.b);
+      s.addText(it.label,{x:x,y:cy-0.13,w:lw-0.12,h:0.28,align:"right",fontFace:T.fBody,fontSize:10.5,bold:true,color:T.ink,margin:0,valign:"middle"});
+      s.addShape(R.LINE,{x:Math.min(xa,xb),y:cy,w:Math.abs(xb-xa),h:0,line:{color:"DCE1E7",width:3.5}});
+      s.addShape(R.OVAL,{x:xa-0.08,y:cy-0.08,w:0.16,h:0.16,fill:{color:"C2CAD3"},line:{type:"none"}});
+      s.addShape(R.OVAL,{x:xb-0.08,y:cy-0.08,w:0.16,h:0.16,fill:{color:T.accent},line:{type:"none"}});
+      s.addText(String(it.b),{x:xb+0.12,y:cy-0.13,w:0.7,h:0.28,fontFace:T.fMono,fontSize:10.5,bold:true,color:T.accentInk,margin:0,valign:"middle"}); }); }
+  // BULLET chart — o:{items:[{label,value,target,max?}]}
+  function bulletChart(s, o, x, y, w, h){
+    const items=o.items||[], lw=1.7, bw=w-lw-0.7, rh=h/items.length;
+    items.forEach((it,i)=>{ const ry=y+i*rh+rh/2-0.14, max=(it.max||Math.max(it.value,it.target||0)*1.25)||1;
+      const W2=v=>Math.max(0,Math.min(1,v/max))*bw;
+      s.addText(it.label,{x:x,y:ry,w:lw-0.12,h:0.28,align:"right",fontFace:T.fBody,fontSize:10.5,bold:true,color:T.ink,margin:0,valign:"middle"});
+      s.addShape(R.ROUNDED_RECTANGLE,{x:x+lw,y:ry,w:bw,h:0.28,rectRadius:0.05,fill:{color:"EEF1F5"},line:{type:"none"}});
+      s.addShape(R.ROUNDED_RECTANGLE,{x:x+lw,y:ry,w:Math.max(0.05,W2(it.value)),h:0.28,rectRadius:0.05,fill:{color:T.accent},line:{type:"none"}});
+      if(it.target!=null) s.addShape(R.RECTANGLE,{x:x+lw+W2(it.target)-0.02,y:ry-0.05,w:0.045,h:0.38,fill:{color:T.ink}});
+      s.addText(String(it.value),{x:x+lw+bw+0.1,y:ry,w:0.6,h:0.28,fontFace:T.fMono,fontSize:10.5,bold:true,color:T.accentInk,margin:0,valign:"middle"}); }); }
+  // WAFFLE — o:{value(0..100), label?, sub?} ; 10x10 grid filled bottom-up + big figure on the right
+  function waffleChart(s, o, x, y, w, h){
+    const size=Math.min(h,w*0.55), cell=size/10*0.82, gap=size/10*0.18, filled=Math.round(Math.max(0,Math.min(100,o.value)));
+    for(let r=0;r<10;r++) for(let c=0;c<10;c++){ const idx=(9-r)*10+c;
+      s.addShape(R.ROUNDED_RECTANGLE,{x:x+c*(cell+gap),y:y+r*(cell+gap),w:cell,h:cell,rectRadius:cell*0.18,
+        fill:{color:idx<filled?T.accent:"E9EDF2"},line:{type:"none"}}); }
+    const tx=x+10*(cell+gap)+0.3;
+    s.addText(o.label!=null?o.label:filled+"%",{x:tx,y:y+size*0.2,w:w-(tx-x),h:0.8,fontFace:T.fDisp,fontSize:40,bold:true,color:T.ink,margin:0});
+    if(o.sub) s.addText(o.sub,{x:tx,y:y+size*0.2+0.85,w:w-(tx-x),h:1.0,fontFace:T.fBody,fontSize:12,color:T.gray,margin:0,lineSpacingMultiple:1.15,valign:"top"}); }
+  // MEKKO / Marimekko — o:{cols:[{label,weight,segs:[{value,color?}]}]}
+  function mekkoChart(s, o, x, y, w, h){
+    const cols=o.cols||[], gap=0.08, totW=cols.reduce((a,c)=>a+c.weight,0)||1, ph=h-0.4;
+    const pal=[T.accent, lighten(T.accent,0.3), lighten(T.accent,0.6), darken(T.accent,0.25)];
+    let cx=x;
+    cols.forEach(col=>{ const cw=(col.weight/totW)*(w-gap*(cols.length-1)); const tot=(col.segs||[]).reduce((a,s2)=>a+s2.value,0)||1; let cy=y;
+      (col.segs||[]).forEach((sg,i)=>{ const sh=sg.value/tot*ph;
+        s.addShape(R.RECTANGLE,{x:cx,y:cy,w:cw,h:sh,fill:{color:sg.color||pal[i%pal.length]},line:{color:"FFFFFF",width:1}});
+        if(sh>0.28) s.addText(Math.round(sg.value/tot*100)+"%",{x:cx,y:cy+sh/2-0.13,w:cw,h:0.26,align:"center",fontFace:T.fMono,fontSize:10,bold:true,color:"FFFFFF",margin:0});
+        cy+=sh; });
+      s.addText(col.label,{x:cx-0.15,y:y+ph+0.08,w:cw+0.3,h:0.3,align:"center",fontFace:T.fBody,fontSize:10.5,bold:true,color:T.ink,margin:0});
+      cx+=cw+gap; }); }
+  // VENN (3 sets) — o:{sets:[{label}], center?} ; transparent native ovals
+  function vennDiagram(s, o, x, y, w, h){
+    const sets=(o.sets||[]).slice(0,3), pal=[T.accent,"76B900","F2A900"];
+    const r=Math.min(w,h)*0.33, cx=x+w/2, cy=y+h/2-r*0.1, d=r*0.62;
+    const pts=[[cx,cy-d],[cx-d*0.92,cy+d*0.6],[cx+d*0.92,cy+d*0.6]];
+    sets.forEach((st,i)=> s.addShape(R.OVAL,{x:pts[i][0]-r,y:pts[i][1]-r,w:2*r,h:2*r,
+      fill:{color:pal[i],transparency:62},line:{color:pal[i],width:1}}));
+    if(o.center) s.addText(o.center,{x:cx-0.8,y:cy+r*0.15-0.14,w:1.6,h:0.3,align:"center",fontFace:T.fDisp,fontSize:12,bold:true,color:T.ink,margin:0});
+    const lp=[[cx-1.0,pts[0][1]-r-0.3],[pts[1][0]-r-0.5,pts[1][1]+r+0.04],[pts[2][0]+r-1.5,pts[2][1]+r+0.04]];
+    sets.forEach((st,i)=> s.addText(st.label,{x:lp[i][0],y:lp[i][1],w:2.0,h:0.28,align:"center",fontFace:T.fBody,fontSize:11,bold:true,color:T.ink,margin:0})); }
+
   // table cells (anthracite header, key value highlighted in accent)
   const th = (t,al)=>({text:t,options:{fill:{color:T.accentInk},color:"FFFFFF",bold:true,fontFace:T.fDisp,fontSize:11.5,align:al||"left",valign:"middle"}});
   const tk = (t)=>({text:t,options:{color:T.ink,fontFace:T.fBody,fontSize:11.5,align:"left",valign:"middle",fill:{color:T.bg}}});
@@ -472,5 +545,6 @@ module.exports = function kit(pres, overrides = {}) {
            chartLight, th, tk, tv, darkBase, eyebrowDark, coverDark, dividerDark, darkHeader,
            zone, cols, rows, pad, exhibitHeader, cagrArrow, chartCallout, tracker, harvey, footnotes, md,
            cardShadow, cardShape, coverLight, bgDeco, darken, lighten, grad, badge,
-           doughnutChart, radarChart, comboBarLine, scatterMap };
+           doughnutChart, radarChart, comboBarLine, scatterMap,
+           slopeChart, dumbbellChart, bulletChart, waffleChart, mekkoChart, vennDiagram };
 };

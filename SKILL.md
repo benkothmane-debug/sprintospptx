@@ -218,6 +218,13 @@ Archetype-specific pages (workshop activities, step-by-step, quiz, RAG status, c
 > pages = light background. **Exception: the cover is light by default** (user preference,
 > `kit.coverLight`). See `references/structure-and-color.md`.
 
+**Compose freely — zones are interchangeable.** Templates are recipes, not cages: every slide is a
+grid of zones (`kit.zone`/`cols`/`rows`), and ANY exhibit, panel or list can occupy ANY zone. Take the
+left half of one pattern and the right half of another (a waterfall next to proof points, a quote above
+a funnel, a mekko beside a table) — the golden deck's exhibit gallery is built exactly this way. If no
+template fits the content, compose the slide from primitives on the grid instead of forcing the content
+into the nearest template.
+
 **Layout variety — by judgment, not by quota.** The default reflex is variety (the kit offers
 **20** templates in `slide_templates.js` + the catalog of 60 patterns + free composition on the grid):
 do not recycle the same quintet out of laziness. But **it is a conscious per-slide choice, not a
@@ -322,10 +329,13 @@ all **reliable under LibreOffice rendering**:
    `python3 scripts/effects.py deck.pptx` which converts these shapes into real OOXML `<a:gradFill>`. Graceful
    fallback: without this pass, the shape keeps its solid fill. Driven by `THEME.gradients` (default `true`).
    **Build order: `node build.js` → `effects.py` → `rezip.py`.**
-2. **SVG exhibits → PNG** (`assets/svg.cjs`). The universal escape hatch: anything SVG can draw
-   (gradient gauges/donuts via `svg.donutGauge`, radial bars via `svg.radialBars`, or a custom SVG)
-   becomes a slide image. `await svg.render(svgString, outDir, name)` → PNG, placed via `addImage`.
-   **Async → pre-generate BEFORE the synchronous build** (like the icons).
+2. **SVG → PNG engine** (`assets/svg.cjs`). ⚠️ Produces IMAGES — **never use it for data exhibits**:
+   a client must be able to edit every figure, and all data exhibits have NATIVE equivalents in the
+   kit (`slopeChart`, `dumbbellChart`, `bulletChart`, `waffleChart`, `mekkoChart`, `vennDiagram`,
+   `doughnutChart`, `radarChart`, `comboBarLine`, `scatterMap`, `waterfall`, `matrix2x2`…). Reserve
+   SVG for DECORATIVE visuals with no native equivalent (gradient rings `donutGauge`/`radialBars`
+   used as accents, textured visuals). `await svg.render(svgString, outDir, name)` → PNG via
+   `addImage`. **Async → pre-generate BEFORE the synchronous build** (like the icons).
 3. **Glow on big numbers** (`metricStrip(..., {dark:true})`). A **dark** KPI strip combines native gradient
    + halo (`glow`, native pptxgenjs, text only — only renders on dark backgrounds). Driven by `THEME.glow` (default
    `true`), subtle by default (size 4, opacity 0.3). On light backgrounds, no glow (it would drown there).
