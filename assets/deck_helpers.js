@@ -196,7 +196,9 @@ module.exports = function kit(pres, overrides = {}) {
     s.addShape(R.RECTANGLE,{x,y,w,h,fill:{color:T.bg},line:{color:T.rule,width:1}});
     s.addShape(R.LINE,{x:x+w/2,y,w:0,h,line:{color:T.rule,width:0.75}});
     s.addShape(R.LINE,{x,y:y+h/2,w,h:0,line:{color:T.rule,width:0.75}});
-    if(opts.ylabel) s.addText(opts.ylabel,{x:x-0.85,y,w:0.7,h,rotate:270,align:"center",valign:"middle",fontFace:T.fBody,fontSize:9,color:T.gray2,margin:0});
+    // rotated axis label: long flat box centered left of the plot (pptxgenjs rotates around the
+    // box CENTER and wraps to pre-rotation width — same geometry as scatterMap's yLabel).
+    if(opts.ylabel) s.addText(opts.ylabel,{x:x-0.32-h/2,y:y+h/2-0.15,w:h,h:0.3,rotate:270,align:"center",valign:"middle",fontFace:T.fBody,fontSize:9,color:T.gray2,margin:0});
     if(opts.xlabel) s.addText(opts.xlabel,{x,y:y+h+0.06,w,h:0.25,align:"center",fontFace:T.fBody,fontSize:9,color:T.gray2,margin:0});
     (opts.items||[]).forEach(it=>{ const d=it.r||0.26, cx=x+it.x*w, cy=y+(1-it.y)*h;
       s.addShape(R.OVAL,{x:cx-d/2,y:cy-d/2,w:d,h:d,fill:{color:opts.dot||T.accent}});

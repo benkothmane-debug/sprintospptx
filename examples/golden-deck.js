@@ -487,6 +487,87 @@ kit.dividerDark(pres.addSlide(), { part: "Appendix", title: "Exhibit gallery",
   kit.source(s, "Source: 42 customer interviews; pilot CRM extract, W28", P());
 }
 
+// G10. Full-page 2x2 PORTFOLIO MATRIX — the classic prioritization slide
+{
+  const s = pres.addSlide();
+  kit.frameLight(s, "EXHIBITS — PORTFOLIO MATRIX",
+    "Standard contracts and predictive premium sit in the invest quadrant; the Benelux move can wait",
+    "Full-page 2x2 (attractiveness vs ability to win), dot size proportional to the revenue pocket.");
+  const [L, R2] = kit.cols([1.9, 1], { top: 2.3 });
+  const mx = L.x + 0.9, my = L.y + 0.25, mw = L.w - 1.3, mh = L.h - 0.95;
+  kit.matrix2x2(s, mx, my, mw, mh, {
+    xlabel: "Ability to win (coverage, data, brand)", ylabel: "Pocket attractiveness (size x growth)",
+    items: [
+      { x: 0.78, y: 0.85, label: "Std contracts", r: 0.42 },
+      { x: 0.86, y: 0.62, label: "Predictive premium", r: 0.36 },
+      { x: 0.62, y: 0.55, label: "Spare parts", r: 0.3 },
+      { x: 0.55, y: 0.28, label: "Training & audit", r: 0.22 },
+      { x: 0.28, y: 0.66, label: "Benelux extension", r: 0.26 },
+      { x: 0.16, y: 0.24, label: "IoT hardware resale", r: 0.2 }] });
+  [["Build the case", mx + 0.12, my + 0.1, "l"], ["INVEST", mx + mw - 1.3, my + 0.1, "l"],
+   ["Deprioritize", mx + 0.12, my + mh - 0.32, "l"], ["Harvest selectively", mx + mw - 1.75, my + mh - 0.32, "l"]]
+    .forEach(q => s.addText(q[0], { x: q[1], y: q[2], w: 1.9, h: 0.24, fontFace: kit.THEME.fMono, fontSize: 9, bold: true, color: kit.THEME.gray2, margin: 0 }));
+  kit.proofTitle(s, R2.x, R2.y, R2.w);
+  kit.proofs(s, [
+    "The two invest pockets carry EUR 73M of the EUR 100M capturable: focus beats breadth. [F]",
+    "Benelux is attractive but premature: ability to win stays low until the French platform is proven. [I]",
+    "IoT hardware resale fails both tests: exit the line by 2027 and free 6 sales FTEs. [A]"],
+    R2.x, R2.y + 0.4, R2.w, L.h - 1.4, 12);
+  kit.band(s, "Rule", "One quadrant, one behavior: invest, build, harvest or deprioritize - never all four at once.");
+  kit.source(s, SRC, P());
+}
+
+// G11. Full-page HEATMAP — capacity load by role and quarter (RAG scale)
+{
+  const s = pres.addSlide();
+  kit.frameLight(s, "EXHIBITS — HEATMAP",
+    "Technician capacity is the binding constraint of 2027: two quarters run hot on three roles",
+    "Heatmap (RAG scale, functional colors), the standard exhibit for capacity, dependencies and adoption.");
+  const z = kit.zone({ top: 2.3, noKicker: false });
+  const roles = ["Field technicians", "Predictive experts", "Installed-base sales", "Platform engineers", "Trainers", "PMO & governance"];
+  const quarters = ["Q1 27", "Q2 27", "Q3 27", "Q4 27", "Q1 28", "Q2 28", "Q3 28", "Q4 28"];
+  const load = [ // 0 = comfortable, 1 = overloaded (invert -> red)
+    [0.35, 0.5, 0.7, 0.9, 0.95, 0.8, 0.6, 0.5],
+    [0.3, 0.45, 0.8, 0.95, 0.9, 0.7, 0.55, 0.45],
+    [0.5, 0.6, 0.7, 0.75, 0.7, 0.6, 0.5, 0.45],
+    [0.6, 0.85, 0.9, 0.7, 0.5, 0.4, 0.35, 0.3],
+    [0.25, 0.55, 0.9, 0.95, 0.85, 0.6, 0.4, 0.3],
+    [0.4, 0.5, 0.55, 0.6, 0.55, 0.5, 0.45, 0.4]];
+  const gx = z.x + 2.5, cw = (z.w - 2.6 - 7 * 0.06) / 8, ch = 0.46;
+  quarters.forEach((q, c) => s.addText(q, { x: gx + c * (cw + 0.06), y: z.y, w: cw, h: 0.26, align: "center", fontFace: kit.THEME.fMono, fontSize: 9.5, color: kit.THEME.gray2, margin: 0 }));
+  roles.forEach((r, i) => s.addText(r, { x: z.x, y: z.y + 0.34 + i * (ch + 0.06), w: 2.4, h: ch, fontFace: kit.THEME.fBody, fontSize: 11, color: kit.THEME.ink, valign: "middle", margin: 0 }));
+  kit.heatmap(s, load, gx, z.y + 0.34, { cw, ch, gap: 0.06, invert: true });
+  [["2E7D32", "Comfortable"], ["E68A00", "Tight"], ["C62828", "Overloaded"]].forEach((l, i) => {
+    const lx = gx + i * 1.75;
+    s.addShape(pres.shapes.RECTANGLE, { x: lx, y: z.y + 3.55, w: 0.22, h: 0.16, fill: { color: l[0] } });
+    s.addText(l[1], { x: lx + 0.3, y: z.y + 3.47, w: 1.4, h: 0.3, fontFace: kit.THEME.fBody, fontSize: 10, color: kit.THEME.gray, valign: "middle", margin: 0 }); });
+  kit.band(s, "Action", "Q3-Q4 2027 run hot on technicians, experts and trainers: contract 12 external trainers now or slip wave 2 by a quarter.");
+  kit.source(s, "Source: capacity model v3, program PMO", P());
+}
+
+// G12. Full-page PROJECT PLAN — integrated Gantt across 2027-2028
+{
+  const s = pres.addSlide();
+  kit.frameLight(s, "EXHIBITS — PROJECT PLAN",
+    "Eight workstreams over 24 months; the go/no-go after the pilot is the plan's single hinge",
+    "Full-page Gantt: accent = critical path, gray = supporting streams, diamonds = program milestones.");
+  const z = kit.zone({ top: 2.35, noKicker: false });
+  kit.gantt(s, [
+    { label: "M&A & Novaserv integration", start: 0, span: 3 },
+    { label: "North pilot (400 sites)", start: 1, span: 2 },
+    { label: "Premium offer & pricing", start: 0.5, span: 2, color: kit.THEME.neg },
+    { label: "Platform migration", start: 2, span: 4 },
+    { label: "Training waves (300 techs)", start: 2.5, span: 4.5 },
+    { label: "Regional roll-out (5 waves)", start: 4, span: 4 },
+    { label: "Parts hubs build-out", start: 3, span: 3, color: kit.THEME.neg },
+    { label: "Benelux feasibility", start: 6, span: 2, color: kit.THEME.neg }],
+    z.x, z.y + 0.45, z.w, z.h - 1.35,
+    { labelW: 2.9, periods: ["Q1 27", "Q2 27", "Q3 27", "Q4 27", "Q1 28", "Q2 28", "Q3 28", "Q4 28"],
+      milestones: [ { at: 3, label: "Go/no-go" }, { at: 5, label: "Wave 3" }, { at: 8, label: "35% mix" }] });
+  kit.band(s, "Critical path", "M&A -> pilot -> platform -> roll-out: a one-quarter slip on any accent bar moves the 35% mix target by a quarter.");
+  kit.source(s, "Source: integrated program plan v2, July 2026", P());
+}
+
 // Closing
 kit.coverDark(pres.addSlide(), { eyebrow: "NEXT STEPS", title: "Decide in September",
   governing: "Three decisions at the September 18 committee: M&A mandate, pilot budget, executive sponsor. The decision's break-even is a 14% attach rate; the pilot measured 26%.",
