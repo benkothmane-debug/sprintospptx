@@ -101,7 +101,7 @@ P. PLAN              → task list: pipeline steps + 1 task/slide (detailed cont
 0. ARCHETYPE         → intent of the deck (strategy / workshop / training / explainer / pitch / status)
                                                                     [references/deck-archetypes.md]
 1. DATA ANCHORING    → one .md per source document (verbatim copy)  [references/data-extraction.md]
-2. CONTENT & WORDING → final text, so-what, evidence labels         [references/wording.md]
+2. CONTENT & WORDING → final text (tag-free), so-what, evidence-tagged reasoning [references/wording.md]
 3. DECK PLAN         → structure + register per slide               [references/page-types.md + slide-layouts.md]
 C. MBB CRAFT         → fine-grained rules for titles / exhibits / typography / chrome [references/mbb-slide-craft.md]
 4. BRAND IDENTITY    → web search for the subject's brand → brand/palette.md  [references/brand-identity.md]
@@ -118,7 +118,7 @@ checkboxes). Two levels:
 1. **One task per pipeline step** (Archetype, Data anchoring, Content, Plan, Brand, Design, Build, QA).
 2. **One task per planned slide**, whose description defines the content in detail: register
    (analytical / prose / visual), **action title** (the conclusion sentence), key message, planned exhibit with
-   its data, proof points labeled `[F/I/A/E]`, implication / so-what, sources (`sources/*.md`).
+   its data, proof points reasoned with `[F/I/A/E]` (tags stay in the plan, NEVER on the slide), implication / so-what, sources (`sources/*.md`).
 
 Do NOT start the Build until the slide-by-slide list is written: the detailed plan IS the deliverable
 of step 3. Check off each slide once built AND passed through QA.
@@ -166,7 +166,7 @@ deck may exist without being traceable to a `sources/*.md`.** Details → `refer
 ### 2. Content & wording
 
 Turn the data into useful content in `content/<deck>.md`, slide by slide, with an explicit so-what and
-evidence labels: `[F]` sourced fact · `[I]` inference · `[A]` assumption · `[E]` estimate.
+evidence labels used WHILE REASONING: `[F]` sourced fact · `[I]` inference · `[A]` assumption · `[E]` estimate — then STRIPPED from the final visible text (never rendered on a slide; see `references/wording.md`).
 
 > ⚠️ **Write the FINAL TEXT, in sufficient quantity** — this is the number-one cause of hollow slides. The
 > volume targets are **FLOORS, not ceilings**: written page ≥ 180 words; exhibit + prose ≥ 100 words;
@@ -416,6 +416,7 @@ python3 scripts/extract_text.py deck.pptx | grep -iE "\bx{3,}\b|lorem|ipsum|\bTO
       recommendation / decisions-requested slides) — and a decision request has NOT produced a flat
       descriptive deck.
 - [ ] **Numbers faithful to `sources/*.md`** (value, unit, period); no invented value.
+- [ ] **No evidence tags visible**: not a single `[F]`/`[I]`/`[A]`/`[E]` in the rendered deck (they are a reasoning aid, stripped from slide text; a lone deliberate assumption/estimate footnote is the only exception).
 - [ ] **Colors faithful to `brand/palette.md`**: the deck's accent = the file's token (sourced hex), dark
       backgrounds generated with that same accent, no hex outside the palette in the build.
 - [ ] **Action title** on every slide: a conclusion sentence that is **CLEAR, understandable on first

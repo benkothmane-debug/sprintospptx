@@ -44,12 +44,12 @@ s.addChart(pres.charts.BAR, [{ name:"Series", labels:["A","B","C"], values:[60.9
     chartColors:[T.neg, T.neg, T.accent] }));  // overrides go INTO chartLight (it merges them last)
 kit.proofTitle(s, 8.2, 2.2, 4.4);
 kit.proofs(s, [
-  "First proof point, a complete self-contained sentence with a sourced figure [F].",
-  "Second proof point that spells out a mechanism rather than a symbol [I].",
-  "Third proof point, a clearly labeled assumption when data is missing [A].",
+  "First proof point: a complete, self-contained sentence carrying a sourced figure.",
+  "Second proof point that spells out a mechanism rather than a symbol.",
+  "Third proof point: a clearly stated assumption when the data is missing.",
 ], 8.2, 2.55, 4.5, 3.5, 12);
 kit.implication(s, "The consequence sentence (so-what): what the data implies for the decision.");
-kit.source(s, "Source: sources/<doc>.md. Assumptions [A]/[E] made explicit.", 2);
+kit.source(s, "Source: sources/<doc>.md; assumptions and estimates made explicit.", 2);
 
 /* 2bis — WRITTEN PAGE (prose / working slide, light background) */
 s = pres.addSlide();

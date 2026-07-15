@@ -83,8 +83,11 @@ So-what thinking is mandatory on every content slide; its **formatting** is not.
 - **Vary the expression** from slide to slide: sometimes the band, sometimes a bold thesis sentence in the body, sometimes a plain-language callout box, sometimes nothing (the title suffices). Technically: the band only renders if `bottomLine` is passed to the template, so only pass it when there truly is an additional so-what.
 - Order of magnitude: aim for **at most ~1 slide in 3** with a dedicated band; never systematic.
 
-## Evidence labels (epistemology)
-Tag every claim: `[F]` sourced fact · `[I]` inference (derived from facts) · `[A]` assumption (judgment, with confidence level) · `[E]` estimate (computed from data + assumptions). Never present an assumption as a fact.
+## Evidence labels (epistemology) — a REASONING tool, NEVER shown on the slide
+Tag every claim WHILE REASONING: `[F]` sourced fact · `[I]` inference (derived from facts) · `[A]` assumption (judgment, with confidence level) · `[E]` estimate (computed from data + assumptions). Never present an assumption as a fact.
+
+⚠️ **These tags are an author's aid, not deck content. STRIP them from every visible string before it reaches the build.** `[F]`, `[I]`, `[A]`, `[E]` live in `sources/*.md` and in your thinking; they must NEVER appear on a rendered slide (a client does not read "[F]" after a sentence). The build typesets `content/<deck>.md` verbatim, so the final text in that file must already be tag-free — do the tagging as you reason, then delete the tags when you write the final sentence. QA checks that no `[F]/[I]/[A]/[E]` is visible in the rendered deck.
+- Only exception, if truly useful: a single, deliberate footnote flag for one structural **assumption** or **estimate** the reader must know (e.g. "¹ assumption: 8% predictive premium"), never the blanket `[F]` on factual sentences.
 
 ## Argument structure — MATCHES THE DECK'S INTENT (see SKILL.md step 0, Intent lock)
 
@@ -115,7 +118,7 @@ Mutually exclusive, collectively exhaustive categories (3 pillars, 3 risks, 2 sc
 - Action title: <conclusion sentence>
 - Key message: <one line>
 - Exhibit: <type: table / columns / bars / waterfall / 2x2 matrix / benchmark / scenarios / pyramid>
-- Proof points: <2-4 self-contained sentences, tagged [F/I/A/E]>
+- Proof points: <2-4 self-contained sentences; reason with [F/I/A/E] tags, but the sentence WRITTEN HERE is already tag-free (see Evidence labels)>
 - Implication (so-what): <one sentence>
 - Sources / assumptions: <ref sources/*.md; [A]/[E] made explicit>
 ```

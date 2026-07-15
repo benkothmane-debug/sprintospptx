@@ -172,9 +172,9 @@ tpl.exhibitInsights(pres.addSlide(), { eyebrow: "EVIDENCE", tracker: TRK,
         chartColors: [kit.THEME.neg, kit.THEME.accent], showLegend: true, legendPos: "b",
         dataLabelFontSize: 10, valAxisHidden: true })) },
   insights: [
-    "Services margin reaches 46% in 2025 versus 20% for equipment, and has been growing 1.2 points per year since 2021. [F]",
-    "The gap comes from the mix: multi-year contracts smooth travel costs and raise technician utilization from 61% to 78%. [I]",
-    "Each point of services mix adds roughly 0.55 point of group margin: the 35% mix target lifts group margin from 28% to 34%. [E]"],
+    "Services margin reaches 46% in 2025 versus 20% for equipment, and has been growing 1.2 points per year since 2021.",
+    "The gap comes from the mix: multi-year contracts smooth travel costs and raise technician utilization from 61% to 78%.",
+    "Each point of services mix adds roughly 0.55 point of group margin: the 35% mix target lifts group margin from 28% to 34%."],
   source: SRC, page: P() });
 
 // 11. recoOnePager
@@ -507,9 +507,9 @@ kit.dividerDark(pres.addSlide(), { part: "Appendix", title: "Exhibit gallery",
     .forEach(q => s.addText(q[0], { x: q[1], y: q[2], w: 1.9, h: 0.24, fontFace: kit.THEME.fMono, fontSize: 9, bold: true, color: kit.THEME.gray2, margin: 0 }));
   kit.proofTitle(s, R2.x, R2.y, R2.w);
   kit.proofs(s, [
-    "The two invest pockets carry EUR 73M of the EUR 100M capturable: focus beats breadth. [F]",
-    "Benelux is attractive but premature: ability to win stays low until the French platform is proven. [I]",
-    "IoT hardware resale fails both tests: exit the line by 2027 and free 6 sales FTEs. [A]"],
+    "The two invest pockets carry EUR 73M of the EUR 100M capturable: focus beats breadth.",
+    "Benelux is attractive but premature: ability to win stays low until the French platform is proven.",
+    "IoT hardware resale fails both tests: exit the line by 2027 and free 6 sales FTEs."],
     R2.x, R2.y + 0.4, R2.w, L.h - 1.4, 12);
   kit.band(s, "Rule", "One quadrant, one behavior: invest, build, harvest or deprioritize - never all four at once.");
   kit.source(s, SRC, P());
