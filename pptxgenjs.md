@@ -122,7 +122,7 @@ slide.addShape(pres.shapes.RECTANGLE, {
 });
 ```
 
-**⚠️ NEVER add decorative color bars or accent stripes** — thin solid-fill rectangles along one edge of the slide (a vertical sidebar stripe, a top/bottom band) or along one edge of a card (a thin colored strip on the top or left of a content block). These read as AI-generated filler. To set a card apart, use a subtle `fill` tint or a `shadow` (as above), not an edge stripe. Avoid patterns like `addShape(RECTANGLE, {x:0, w:0.25, h:5.625, ...})` (slide-edge sidebar) or `{x:1, y:1, w:0.08, h:1.5, ...}` (card-edge accent).
+**⚠️ NEVER add DECORATIVE color bars or accent stripes** — thin solid-fill rectangles along a slide edge (vertical sidebar stripe, empty top/bottom band) added 'to look designed'. These read as AI-generated filler. Exception — the kit's SEMANTIC accent edges are fine and expected: the implication/`band()` left edge, `pullQuote`'s edge, the soft-highlight edge of `keyMessagesSoWhat`/`insightProof` (they mark a ROLE, not decoration). The test: if removing the bar loses no meaning, it was decorative — delete it.
 
 Shadow options:
 
@@ -242,7 +242,7 @@ slide.addImage({
 
 ### Icon Libraries
 
-Install: `npm install -g react-icons react react-dom sharp`
+Install LOCALLY in the skill directory (a global -g install cannot be require()'d): `npm install react react-dom react-icons` (sharp is already a core dependency).
 
 Popular icon sets in react-icons:
 - `react-icons/fa` - Font Awesome

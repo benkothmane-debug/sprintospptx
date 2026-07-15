@@ -15,7 +15,7 @@
    - reliable sources: official brand page / press kit, `brandfetch.com/<domain>`, `brandcolorcode.com`, Wikipedia (logo infobox). Record **primary + secondary** (hex).
 2. **Extraction from the logo (confirmation / fallback)** — fetch a **raster logo (PNG/JPG/WebP)** and extract its dominant color:
    ```bash
-   curl -s "https://logo.clearbit.com/<domaine>" -o /tmp/logo.png   # no key required (may be blocked depending on network)
+   curl -s "https://logo.clearbit.com/<domain>" -o /tmp/logo.png   # no key required (may be blocked depending on network)
    node assets/brand_colors.cjs /tmp/logo.png                        # -> {accent, accentInk, accentOnDark, band, candidates}
    ```
    `brand_colors.cjs` ignores white/black/gray and returns the most saturated color (the accent), plus `accentInk` (dark, text on light), `accentOnDark` (vivid, on dark) and `band` (light tint).

@@ -8,7 +8,7 @@
 This is the classic recommendation for premium decks: dark backgrounds for title + conclusion, light for content; title + conclusions in navy (academic usage).
 
 ## Structure checklist (verify BEFORE delivering)
-- [ ] **Cover** — crafted dark (never white, never a plain solid fill).
+- [ ] **Cover** — either the composed LIGHT cover (`kit.coverLight`, the default: large type + accent composition) or a crafted dark background; never a plain, unworked page.
 - [ ] **Agenda** — dark + the document's **Objective**, if the deck > ~5 slides.
 - [ ] **Executive summary** (analytical) if the subject carries a thesis.
 - [ ] **Dividers** — dark, before each major part (long deck).
@@ -24,7 +24,7 @@ pptxgenjs **does not do gradients natively** → **generate a background PNG** t
    - a **radial halo** in the accent (placed where there is little text);
    - sober **geometric shapes** (concentric rings = "signal propagation", thin masked hatching);
    - a slight **vignette** for focus.
-2. In the build: `slide.background = { path: 'assets/<variante>.png' }`.
+2. In the build: `slide.background = { path: 'assets/<variant>.png' }`.
 3. Place the text on top using the dark theme's **light** colors (off-white / vivid accent / muted).
 
 The background's motif and accent are driven by the brand accent (a single place, see `design-tokens.md`). Vary the placement of the halo/rings between variants (cover ≠ agenda ≠ close) so the pages are not identical.

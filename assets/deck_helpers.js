@@ -189,7 +189,7 @@ module.exports = function kit(pres, overrides = {}) {
       s.addShape(R.RECTANGLE,{x:bx,y:top,w:bw,h:Math.max(0.04,bot-top),fill:{color:col}});
       const lbl=(p.val>=0&&!p.total?"+":"")+(opts.fmt?opts.fmt(p.val):p.val);
       s.addText(lbl,{x:bx-0.15,y:top-0.3,w:bw+0.3,h:0.27,fontFace:T.fMono,fontSize:opts.size||11,color:T.ink,bold:true,align:"center",margin:0});
-      s.addText(p.label,{x:bx-0.2,y:y+h+0.05,w:bw+0.4,h:0.42,fontFace:T.fBody,fontSize:9,color:T.gray,align:"center",margin:0,lineSpacingMultiple:0.95});
+      s.addText(p.label,{x:bx-gap/2,y:y+h+0.05,w:bw+gap,h:0.42,fontFace:T.fBody,fontSize:9,color:T.gray,align:"center",margin:0,lineSpacingMultiple:0.95});
       if(i<pts.length-1){ const ny=yv(p.end); s.addShape(R.LINE,{x:bx+bw,y:ny,w:gap,h:0,line:{color:T.gray2,width:0.75,dashType:"dash"}}); } }); }
   // 2x2 MATRIX: axes + items [{x:0..1, y:0..1, label, r}]
   function matrix2x2(s,x,y,w,h,opts){ opts=opts||{};
@@ -200,9 +200,10 @@ module.exports = function kit(pres, overrides = {}) {
     // box CENTER and wraps to pre-rotation width — same geometry as scatterMap's yLabel).
     if(opts.ylabel) s.addText(opts.ylabel,{x:x-0.32-h/2,y:y+h/2-0.15,w:h,h:0.3,rotate:270,align:"center",valign:"middle",fontFace:T.fBody,fontSize:9,color:T.gray2,margin:0});
     if(opts.xlabel) s.addText(opts.xlabel,{x,y:y+h+0.06,w,h:0.25,align:"center",fontFace:T.fBody,fontSize:9,color:T.gray2,margin:0});
-    (opts.items||[]).forEach(it=>{ const d=it.r||0.26, cx=x+it.x*w, cy=y+(1-it.y)*h;
+    (opts.items||[]).forEach(it=>{ const d=it.r||0.26, cx=x+it.x*w, cy=y+(1-it.y)*h, lw=opts.lw||2.0;
       s.addShape(R.OVAL,{x:cx-d/2,y:cy-d/2,w:d,h:d,fill:{color:opts.dot||T.accent}});
-      if(it.label) s.addText(it.label,{x:cx+d/2+0.06,y:cy-0.16,w:opts.lw||2.0,h:0.32,fontFace:T.fBody,fontSize:10,color:T.ink,bold:true,valign:"middle",margin:0}); }); }
+      const left = it.x > 0.72; // far-right labels flip LEFT to stay inside the frame
+      if(it.label) s.addText(it.label,{x:left?cx-d/2-0.06-lw:cx+d/2+0.06,y:cy-0.16,w:lw,h:0.32,align:left?"right":"left",fontFace:T.fBody,fontSize:10,color:T.ink,bold:true,valign:"middle",margin:0}); }); }
   // progress bar (scorecards). pct 0..100
   function progressBar(s,x,y,w,pct,opts){ opts=opts||{}; const hh=opts.h||0.18, v=Math.max(0,Math.min(100,pct));
     s.addShape(R.RECTANGLE,{x,y,w,h:hh,fill:{color:opts.track||"E8E8E8"}});
@@ -299,12 +300,15 @@ module.exports = function kit(pres, overrides = {}) {
       {type:pres.charts.LINE, data:[{name:o.line.name, labels:o.cats, values:o.line.values}],
         options:{chartColors:[o.lineColor||T.accentInk], secondaryValAxis:true, secondaryCatAxis:true,
           lineSize:2.5, lineDataSymbol:"circle", lineDataSymbolSize:6}}
-    ], chartLight({x:o.x,y:o.y,w:o.w,h:o.h, showLegend:true, legendPos:"b", legendColor:T.ink, legendFontFace:T.fBody,
+    ], (()=>{ const opts = chartLight({x:o.x,y:o.y,w:o.w,h:o.h, showLegend:true, legendPos:"b", legendColor:T.ink, legendFontFace:T.fBody,
       legendFontSize:11, showValue:false,
       // secondary axis: pptxgenjs requires paired valAxes AND catAxes (2 entries); the 1st valAxis reuses the light style
       valAxes:[{valAxisLabelColor:T.gray2, valAxisLabelFontFace:T.fMono, valAxisLabelFontSize:9, valGridLine:{color:"E8E8E8",size:0.5}},
                {valAxisHidden:false, valAxisLabelColor:T.gray2, valAxisLabelFontFace:T.fMono, valAxisLabelFontSize:9}],
-      catAxes:[{catAxisLabelColor:T.gray, catAxisLabelFontFace:T.fBody, catAxisLabelFontSize:11}, {catAxisHidden:true}] })); }
+      catAxes:[{catAxisLabelColor:T.gray, catAxisLabelFontFace:T.fBody, catAxisLabelFontSize:11}, {catAxisHidden:true}] });
+      // "outEnd" is invalid inside <c:lineChart> (ECMA-376) and triggers PowerPoint's repair prompt;
+      // labels are hidden anyway (showValue:false), so drop the position hint entirely.
+      delete opts.dataLabelPosition; return opts; })()); }
   // POSITIONING SCATTER (manual shapes: NAMED points + quadrants) --------------
   // o:{x,y,w,h, xLabel,yLabel, quadrants:[topLeft,topRight,bottomLeft,bottomRight]?, points:[{label,x,y(0..1),size?,highlight?}]}
   function scatterMap(s, o){ const z={x:o.x,y:o.y,w:o.w,h:o.h}, pad=0.5;
@@ -326,7 +330,8 @@ module.exports = function kit(pres, overrides = {}) {
     // named points
     (o.points||[]).forEach(p=>{ const d=(p.size||0.2), cx=px+p.x*pw-d/2, cy=py+(1-p.y)*ph-d/2, hl=p.highlight;
       s.addShape(R.OVAL,{x:cx,y:cy,w:d,h:d,fill:{color:hl?T.accent:lighten(T.accent,0.45)},line:{color:hl?T.accentInk:T.accent,width:1}});
-      s.addText(p.label,{x:cx+d+0.04,y:cy-0.02+d/2-0.12,w:1.6,h:0.24,fontFace:T.fBody,fontSize:9.5,bold:!!hl,color:hl?T.accentInk:T.ink,margin:0,valign:"middle"}); }); }
+      const left = p.x > 0.72; // labels of far-right points flip LEFT so they stay inside the frame
+      s.addText(p.label,{x:left?cx-1.64:cx+d+0.04,y:cy-0.02+d/2-0.12,w:1.6,h:0.24,align:left?"right":"left",fontFace:T.fBody,fontSize:9.5,bold:!!hl,color:hl?T.accentInk:T.ink,margin:0,valign:"middle"}); }); }
 
   // ---------- NATIVE data exhibits (pure pptxgenjs shapes -> fully EDITABLE in PowerPoint) ----------
   // These replace the SVG factories for DATA exhibits: same visuals, but every bar/dot/label is a
@@ -358,7 +363,9 @@ module.exports = function kit(pres, overrides = {}) {
       s.addShape(R.LINE,{x:Math.min(xa,xb),y:cy,w:Math.abs(xb-xa),h:0,line:{color:"DCE1E7",width:3.5}});
       s.addShape(R.OVAL,{x:xa-0.08,y:cy-0.08,w:0.16,h:0.16,fill:{color:"C2CAD3"},line:{type:"none"}});
       s.addShape(R.OVAL,{x:xb-0.08,y:cy-0.08,w:0.16,h:0.16,fill:{color:T.accent},line:{type:"none"}});
-      s.addText(String(it.b),{x:xb+0.12,y:cy-0.13,w:0.7,h:0.28,fontFace:T.fMono,fontSize:10.5,bold:true,color:T.accentInk,margin:0,valign:"middle"}); }); }
+      // on declines (b left of a) the value label flips to the LEFT of the b-dot, away from the gray dot
+      const dec = xb < xa;
+      s.addText(String(it.b),{x:dec?xb-0.82:xb+0.12,y:cy-0.13,w:0.7,h:0.28,align:dec?"right":"left",fontFace:T.fMono,fontSize:10.5,bold:true,color:T.accentInk,margin:0,valign:"middle"}); }); }
   // BULLET chart — o:{items:[{label,value,target,max?}]}
   function bulletChart(s, o, x, y, w, h){
     const items=o.items||[], lw=1.7, bw=w-lw-0.7, rh=h/items.length;
@@ -390,13 +397,16 @@ module.exports = function kit(pres, overrides = {}) {
         cy+=sh; });
       s.addText(col.label,{x:cx-0.15,y:y+ph+0.08,w:cw+0.3,h:0.3,align:"center",fontFace:T.fBody,fontSize:10.5,bold:true,color:T.ink,margin:0});
       cx+=cw+gap; }); }
-  // VENN (3 sets) — o:{sets:[{label}], center?} ; transparent native ovals
+  // VENN (3 sets) — o:{sets:[{label,color?}], center?} ; transparent native ovals.
+  // Geometry fits INSIDE (x,y,w,h) including the labels; colors = accent + derivatives (palette doctrine).
   function vennDiagram(s, o, x, y, w, h){
-    const sets=(o.sets||[]).slice(0,3), pal=[T.accent,"76B900","F2A900"];
-    const r=Math.min(w,h)*0.33, cx=x+w/2, cy=y+h/2-r*0.1, d=r*0.62;
+    const sets=(o.sets||[]).slice(0,3);
+    const pal=[T.accent, lighten(T.accent,0.45), darken(T.accent,0.3)];
+    const r=Math.min(w/3.2, (h-0.7)/3.0), d=r*0.62;
+    const cx=x+w/2, cy=y+1.62*r+0.32;
     const pts=[[cx,cy-d],[cx-d*0.92,cy+d*0.6],[cx+d*0.92,cy+d*0.6]];
     sets.forEach((st,i)=> s.addShape(R.OVAL,{x:pts[i][0]-r,y:pts[i][1]-r,w:2*r,h:2*r,
-      fill:{color:pal[i],transparency:62},line:{color:pal[i],width:1}}));
+      fill:{color:st.color||pal[i],transparency:62},line:{color:st.color||pal[i],width:1}}));
     if(o.center) s.addText(o.center,{x:cx-0.8,y:cy+r*0.15-0.14,w:1.6,h:0.3,align:"center",fontFace:T.fDisp,fontSize:12,bold:true,color:T.ink,margin:0});
     const lp=[[cx-1.0,pts[0][1]-r-0.3],[pts[1][0]-r-0.5,pts[1][1]+r+0.04],[pts[2][0]+r-1.5,pts[2][1]+r+0.04]];
     sets.forEach((st,i)=> s.addText(st.label,{x:lp[i][0],y:lp[i][1],w:2.0,h:0.28,align:"center",fontFace:T.fBody,fontSize:11,bold:true,color:T.ink,margin:0})); }

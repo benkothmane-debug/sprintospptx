@@ -1,6 +1,6 @@
 // Golden deck — the FULL visual reference of the kit: every slide template, the structure pages
-// (dark & light covers, agenda, divider) and an exhibit gallery (native charts, SVG exhibits,
-// craft primitives, dark KPI strip). Realistic content (fictional case). Serves as visual
+// (dark & light covers, agenda, divider) and an exhibit gallery (native charts, editable exhibit
+// primitives, dark KPI strip). Realistic content (fictional case). Serves as visual
 // reference AND as a copy source.
 // Run: node examples/golden-deck.js [outdir]  (then scripts/effects.py + scripts/rezip.py)
 const path = require("path");
@@ -91,7 +91,8 @@ tpl.sideIndex(pres.addSlide(), { eyebrow: "APPROACH", tracker: { ...TRK, active:
   body: [
     { lead: "The 18,400-site installed base is Meridio's foremost strategic asset.", text: "Each site generates on average EUR 4,200 per year in maintenance and parts spending, of which Meridio captures only 31% today. The rest goes to independent maintainers, less well equipped but more present commercially." },
     { lead: "Usage data changes the economic equation.", text: "Across the 6,800 connected sites, the avoidable-failure rate reaches 38%: predictive maintenance would support selling a premium contract while cutting intervention costs by 22%." },
-    { lead: "Field coverage is a defensible advantage.", text: "94% of sites are within two hours of a Meridio technician, versus 61% for the best-placed competitor. This gap, costly to replicate, justifies a price premium measured at 8-12% in the customer interviews." }],
+    { lead: "Field coverage is a defensible advantage.", text: "94% of sites are within two hours of a Meridio technician, versus 61% for the best-placed competitor. This gap, costly to replicate, justifies a price premium measured at 8-12% in the customer interviews." },
+    { lead: "The window to monetize it is now.", text: "Independent maintainers sign roughly 2,300 installed-base contracts per quarter. Each signed contract locks a site for three to five years: the asset does not lose value gradually, it becomes unavailable one signature at a time." }],
   source: SRC, page: P() });
 
 // 4. keyMessagesSoWhat
@@ -135,10 +136,10 @@ tpl.registerTable(pres.addSlide(), { eyebrow: "RISKS", tracker: { ...TRK, active
 tpl.timelineBlocks(pres.addSlide(), { eyebrow: "TRAJECTORY", tracker: { ...TRK, active: 3 },
   title: "The shift executes in four phases over 30 months, with no shock to the core market",
   phases: [
-    { label: "Secure", milestone: "M0-M6", body: "Novaserv closing and retention plan for the 60 technicians; design of the managed offer and of the linked equipment + contract pricing; contracting of the partner platform; recruitment of the installed-base sales core team (8 people)." },
-    { label: "Prove", milestone: "M6-M12", body: "Pilot on 400 connected sites in the North region: measurement of the attach rate (go/no-go threshold: 20%), of actual margin per contract and of satisfaction; premium pricing adjustment; first cohort of 40 technicians trained in predictive maintenance." },
-    { label: "Deploy", milestone: "M12-M24", body: "Roll-out in regional waves (North, East, Rhone, West, South), migration of the 2,100 Novaserv contracts to the target platform, training of 300 technicians, build-up of forward stock in the 12 regional hubs." },
-    { label: "Optimize", milestone: "M24-M30", body: "Predictive maintenance generalized across the connected base (target: 11,000 sites), upgrade of standard contracts to premium, supplier renegotiation on consolidated parts volumes, preparation of the Benelux extension." }],
+    { label: "Secure", milestone: "M0-M6", body: "Novaserv closing and retention plan for the 60 technicians; design of the managed offer and of the linked equipment + contract pricing; contracting of the partner platform; recruitment of the installed-base sales core team (8 people). Exit criterion: retention plan signed by at least 15 of the 18 targeted senior technicians before any public announcement." },
+    { label: "Prove", milestone: "M6-M12", body: "Pilot on 400 connected sites in the North region: measurement of the attach rate (go/no-go threshold: 20%), of actual margin per contract and of satisfaction; premium pricing adjustment; first cohort of 40 technicians trained in predictive maintenance. The go/no-go is contractual: below a 20% attach rate the roll-out stops and the investment case is reviewed." },
+    { label: "Deploy", milestone: "M12-M24", body: "Roll-out in regional waves (North, East, Rhone, West, South), migration of the 2,100 Novaserv contracts to the target platform, training of 300 technicians, build-up of forward stock in the 12 regional hubs. Each wave starts only when the previous one holds a 95% contract-renewal rate, so quality gates the pace." },
+    { label: "Optimize", milestone: "M24-M30", body: "Predictive maintenance generalized across the connected base (target: 11,000 sites), upgrade of standard contracts to premium, supplier renegotiation on consolidated parts volumes, preparation of the Benelux extension. Target exit state: 35% services mix, 11,000 connected sites, and a parts capture rate above 55%." }],
   source: SRC, page: P() });
 
 // 8. insightProof
@@ -153,7 +154,7 @@ tpl.insightProof(pres.addSlide(), { eyebrow: "CONVICTION", tracker: TRK,
 
 // 9. nColCards
 tpl.nColCards(pres.addSlide(), { eyebrow: "MINUTES", tracker: { ...TRK, active: 2 },
-  title: "The June 12 committee approved the principle and framed three open questions", tintAlt: true,
+  title: "The June 12 committee approved the principle and framed three open questions",
   cards: [
     { head: "Discussed", body: ["Market diagnosis shared without reservation", "Debate on the pace: 24 vs 30 months", "HR concern about the training load", "CFO question on sensitivity to the attach rate", "Premium price positioning deemed defensible"] },
     { head: "Decided", body: ["Principle of the services shift approved unanimously", "EUR 1.2M M&A study budget released", "North pilot confirmed for Q1 2027", "Go/no-go threshold set: attach rate of 20% or more", "Monthly reporting to the strategy committee"] },
@@ -285,25 +286,25 @@ tpl.lanesMatrix(pres.addSlide(), { eyebrow: "TARGET CUSTOMER JOURNEY", tracker: 
 tpl.mosaic(pres.addSlide(), { eyebrow: "PROGRAM AT A GLANCE", tracker: { ...TRK, active: 3 },
   title: "One program, five moving parts, a single north-star metric",
   hero: { head: "EUR 100M of annual revenue is capturable on the existing base",
-    body: "Standard contracts, predictive premium, parts and training: four pockets, all built on assets already paid for. The north-star metric is the contract attach rate: the pilot measured 26% against a 14% break-even.\n\nEverything in this program either raises the attach rate or raises the value of an attached contract." },
+    body: "Standard contracts, predictive premium, parts and training: four pockets, all built on assets already paid for. The north-star metric is the contract attach rate: the pilot measured 26% against a 14% break-even.\n\nEverything in this program either raises the attach rate or raises the value of an attached contract. That is why the steering pack tracks five tiles and nothing else: pilot conversion, the Novaserv integration, people readiness, platform delivery and the EBITDA trajectory.\n\nIf one tile turns red, the program slows; if two do, it stops and the case is re-underwritten." },
   tiles: [
     { head: "Pilot", body: "412 sites equipped in the North region.", kpi: ["26%", "attach rate"] },
     { head: "M&A", body: "Novaserv: 2,100 contracts, 60 technicians.", kpi: ["9.5x", "EBITDA cap"] },
     { head: "People", body: "Predictive-maintenance training track.", kpi: ["300", "technicians"] },
     { head: "Platform", body: "Partner JV, ERP integration in 3 waves.", kpi: ["12 mo", "time-to-market"] },
-    { head: "Finance", body: "EBITDA doubles in the base case.", kpi: ["152", "EBITDA 2029, EUR M"] }],
+    { head: "Finance", body: "EBITDA doubles in the base case, with payback in 4.2 years and a +EUR 147M NPV at a 9% discount rate.", kpi: ["152", "EBITDA 2029, EUR M"] }],
   source: SRC, page: P() });
 
 // ─────────────────────────── EXHIBIT GALLERY ───────────────────────────
 // Divider (dark structure page)
 kit.dividerDark(pres.addSlide(), { part: "Appendix", title: "Exhibit gallery",
-  caption: "The same case, told through every exhibit family of the kit: native charts, SVG exhibits, craft primitives, dark KPI strip." });
+  caption: "The same case, told through every exhibit family of the kit: native charts, editable exhibit primitives, dark KPI strip." });
 
 // G1. Native charts I — doughnut + radar
 {
   const s = pres.addSlide();
   kit.frameLight(s, "EXHIBITS — NATIVE CHARTS I",
-    "Standard contracts hold the largest capturable pocket, and Meridio outscores rivals on every capability but price",
+    "Standard contracts hold the largest capturable pocket, and Meridio leads everywhere except price and digital reach",
     "Doughnut (share of a whole) and radar (multi-criteria profile), both native pptxgenjs charts.");
   const [L, R2] = kit.cols([1, 1], { top: 2.2 });
   kit.exhibitHeader(s, "Capturable revenue by pocket, EUR M/yr", L.x, L.y - 0.02, L.w);

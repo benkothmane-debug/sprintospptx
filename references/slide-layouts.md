@@ -1,11 +1,11 @@
 # Dense layout catalogue (consulting style: BCG / MBB)
 
-The right density = **a COMPOSED, multi-zone slide that fills the whole canvas**, not "one exhibit + 3 bullets" nor half-empty prose. Draw on these patterns (modeled on real consulting-firm templates). Each slide = **common chrome** + **2 to 4 coordinated zones** + **"Key takeaway" band**.
+The right density = **a COMPOSED, multi-zone slide that fills the whole canvas**, not "one exhibit + 3 bullets" nor half-empty prose. Draw on these patterns (modeled on real consulting-firm templates). Each slide = **common chrome** + **2 to 4 coordinated zones** (+ a "Key takeaway" band ONLY when it adds a so-what beyond the title — see wording.md, at most ~1 slide in 3).
 
 ## Common chrome (all content slides)
 - **Number** + **title** (action title) + **subtitle** (1 line).
 - **2 to 4 zones** laid out in a grid (left/right, or 3 columns, or diagram top / table bottom).
-- **"Key takeaway" band** at the bottom (the so-what).
+- Optional **"Key takeaway" band** at the bottom — only when it carries a so-what the title does not (never systematic; ≤ ~1 slide in 3).
 - **Source** bottom-left, **page number** (+ logo) bottom-right.
 - Golden rule: **fill the usable area**; aim for several coordinated elements, not one object surrounded by white space.
 
@@ -143,6 +143,7 @@ coordinates. `examples/golden-deck.js` = one example slide per template, to copy
 | `phasesRoadmap` | Waves/phases as gradient bands + milestones as cards (roadmap, 100 days) | #23, #39 |
 | `canvasGrid` | One-page N×M canvas, dark focal cell (operating model, appendix notes) | #57, #22 |
 | `lanesMatrix` | Swimlane matrix lanes × steps (blueprint, journey, RACI, comms plan) | #44, #60 |
+| `mosaic` | Bento: 1 hero card + 4-7 KPI tiles (program at a glance, mixed formats) | #2, #25 |
 
 Rule: **look for a template first**, parameterize it; compose freely with the grid engine +
 components only if none fits. The catalogue patterns above remain the inspiration list.

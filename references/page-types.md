@@ -14,7 +14,7 @@ Every slide is **Analytical**, **Written (prose)**, or **Visual**. Form follows 
 > ⚠️ Anti-monotony: **vary the registers and layouts** across the deck. A well-made working deck alternates written pages, exhibits, and a few visual pages; it does not repeat the same exhibit+bullets template 12 times.
 
 ## "Consulting-grade" density = a COMPOSED multi-zone slide (the reflex to acquire)
-Density done right is neither "one exhibit + 3 bullets" nor half-empty prose: it is a **composed slide** that **fills the canvas** with **2 to 4 coordinated zones** + a "Key takeaway" band (e.g. framework + table + dots; waterfall + table; bars + donut; table + scatter). In consulting firms, **several exhibits on one slide** are the norm. **Catalog of ~25 dense patterns (BCG/MBB) + components (harvey balls, dots, metric cards, waterfall, 2×2, issue tree, Gantt) → `references/slide-layouts.md`.** Pick a pattern from the catalog rather than re-improvising a "chart + bullets".
+Density done right is neither "one exhibit + 3 bullets" nor half-empty prose: it is a **composed slide** that **fills the canvas** with **2 to 4 coordinated zones** (+ a "Key takeaway" band only when it adds a so-what beyond the title) (e.g. framework + table + dots; waterfall + table; bars + donut; table + scatter). In consulting firms, **several exhibits on one slide** are the norm. **Catalog of 60 dense patterns (BCG/MBB) + components (harvey balls, dots, metric cards, waterfall, 2×2, issue tree, Gantt) → `references/slide-layouts.md`.** Pick a pattern from the catalog rather than re-improvising a "chart + bullets".
 
 ## Density by deck type (reading register)
 - **Deck for oral presentation**: leaner slides, the presenter carries the detail (depth goes in the notes).

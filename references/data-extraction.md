@@ -14,7 +14,7 @@ For **every** document provided (PDF, .docx, .xlsx, .csv, .pptx, web page, e-mai
 
 ## How to extract by format
 - **PDF**: extract the text (`pymupdf`: `fitz.open(...).get_text()`), not an "eyeball" read. For a large PDF, extract all text into a file then `grep` the financial/risk sections.
-- **.docx**: `pandoc fichier.docx -o sources/fichier.md` (or python-docx).
+- **.docx**: `pandoc file.docx -o sources/file.md` (or python-docx).
 - **.xlsx/.csv**: copy sheets/ranges as Markdown tables (openpyxl/pandas).
 - **.pptx**: extract the text (python-pptx) slide by slide.
 - **Web**: fetch the content (WebFetch / pandoc from the HTML) and paste it in.

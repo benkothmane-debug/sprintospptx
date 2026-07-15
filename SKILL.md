@@ -244,7 +244,7 @@ Deck about a company or an identifiable subject → **search the web** for its b
 color via brand guidelines / press kit, logo, possibly typography), with extraction from the logo as confirmation:
 
 ```bash
-curl -s "https://logo.clearbit.com/<domaine>" -o /tmp/logo.png && node assets/brand_colors.cjs /tmp/logo.png
+curl -s "https://logo.clearbit.com/<domain>" -o /tmp/logo.png && node assets/brand_colors.cjs /tmp/logo.png
 ```
 
 Then **write the resolved palette to `brand/palette.md`** (canonical format → `references/brand-identity.md`):
@@ -382,7 +382,9 @@ different metrics: the preview may show an overflow (or a good fit) that the rea
   sentences). Emoji: at most 1/slide, never on an analytical exhibit.
 
 **Form:**
-- Cover / agenda / closing on a white background or a plain flat fill (always a crafted dark background).
+- Cover / agenda / closing left PLAIN (an unworked white page or a flat solid fill). The cover is either
+  the LIGHT composed cover (`kit.coverLight`, the default) or a crafted dark background; agenda, dividers
+  and closing stay on crafted dark backgrounds.
 - The whole deck as "chart + 3 bullets" or number boxes: vary the three registers and the layouts.
 - More than **one accent color**; decorative icons or generic images on analytical pages.
 - **Decorative bars**: empty full-width banner at the top/bottom, side band on the slide edge,
@@ -473,7 +475,7 @@ list of precise corrections** (slide, defect, before → after); apply them then
 - Elements too close (< 0.25"); irregular gaps (big void here, cramped there)
 - HALF-EMPTY CONTENT SLIDE (under-content: flag it for enrichment)
 - Insufficient contrast (light text on light background, dark icon on dark background)
-- Cover / agenda / dividers / closing NOT on a crafted dark background
+- Agenda / dividers / closing NOT on a crafted dark background; cover neither a composed light cover nor a crafted dark one
 - Misaligned columns / cards; box too narrow causing excessive wrapping
 - Flat hierarchy (squint test: title, bold, and accent element must stand out when squinting)
 - Exhibit without a visible unit/period; chart where everything is colored (the key series must be alone in accent)

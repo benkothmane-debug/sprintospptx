@@ -5,7 +5,9 @@
 const path = require("path");
 const pptxgen = require("pptxgenjs");
 const ASSETS = path.join(__dirname, "..", "assets");
-const bg = name => path.join(ASSETS, name);
+const fs = require("fs");
+// background PNGs are generated (gen_bg.cjs), not shipped: fall back to a plain dark fill if absent
+const bg = name => { const p = path.join(ASSETS, name); return fs.existsSync(p) ? p : undefined; };
 
 const pres = new pptxgen();
 pres.layout = "LAYOUT_WIDE";
@@ -38,8 +40,8 @@ kit.frameLight(s, "Pillar 1 - Example",
   "Key message: one line that sets the reading angle.");
 s.addText("Exhibit header (unit)",{x:T.M,y:2.15,w:7,h:0.3,fontFace:T.fBody,fontSize:11,color:T.gray,bold:true,margin:0});
 s.addChart(pres.charts.BAR, [{ name:"Series", labels:["A","B","C"], values:[60.9,130.5,215.9] }],
-  Object.assign({ x:0.4, y:2.5, w:7.4, h:3.6, barDir:"col", valAxisMaxVal:240,
-    chartColors:[T.neg, T.neg, T.accent] }, kit.chartLight()));
+  kit.chartLight({ x:0.4, y:2.5, w:7.4, h:3.6, barDir:"col", valAxisMaxVal:240,
+    chartColors:[T.neg, T.neg, T.accent] }));  // overrides go INTO chartLight (it merges them last)
 kit.proofTitle(s, 8.2, 2.2, 4.4);
 kit.proofs(s, [
   "First proof point, a complete self-contained sentence with a sourced figure [F].",

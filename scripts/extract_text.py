@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import signal, sys as _sys
+try: signal.signal(signal.SIGPIPE, signal.SIG_DFL)  # clean exit when piped to head
+except Exception: pass
 """Extract the text of a .pptx, one `## Slide N` section per slide (local equivalent of extract-text).
 
 Usage: python3 scripts/extract_text.py deck.pptx
